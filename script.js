@@ -1,14 +1,6 @@
 const form = document.getElementById('loginForm');
 const msgBox = document.getElementById('msgBox');
-let selectedRole = 'docente';
-
-document.querySelectorAll('.roles button').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.roles button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        selectedRole = btn.dataset.role;
-    });
-});
+const grados = ['primero', 'segundo', 'tercero', 'cuarto', 'quinto', 'sexto'];
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -26,17 +18,26 @@ form.addEventListener('submit', (e) => {
 
     if (!valid) return;
 
-    const data = {
-        role: selectedRole,
-        user: user.value.trim(),
-        pass: pass.value
-    };
-    console.log('Login:', data);
+    const usuario = user.value.trim().toLowerCase().replace(',', '.');
+    const partesUsuario = usuario.split('.');
+
+    if (partesUsuario.length !== 2 || !partesUsuario[0] || !partesUsuario[1]) {
+        user.closest('.field').classList.add('has-error');
+        user.closest('.field').querySelector('.error-msg').textContent = 'Usa el formato nombre.grado o nombre.departamento';
+        return;
+    }
+
+    const tipoUsuario = grados.includes(partesUsuario[1]) ? 'docente' : 'administrador';
+    sessionStorage.setItem('nombreUsuario', partesUsuario[0]);
 
     msgBox.className = 'msg-box success';
     msgBox.textContent = 'Acceso correcto. Redirigiendo...';
 
     setTimeout(() => {
-        window.location.href = 'dashboard.html?role=' + selectedRole;
+        const destinations = {
+            docente: 'docente.html',
+            administrador: 'administracion.html'
+        };
+        window.location.href = destinations[tipoUsuario];
     }, 800);
 });

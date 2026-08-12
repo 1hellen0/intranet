@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intranet | Panel docente</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="card dashboard">
+        <div class="header">
+            <h1>Panel docente</h1>
+            <p>Bienvenido a la Intranet Institucional.</p>
+        </div>
+        <div class="body">
+            <section class="teacher-greeting" aria-labelledby="greetingTitle">
+                <h2 id="greetingTitle">¡Hola, <span id="teacherName">docente</span>!</h2>
+                <p>Te deseamos una excelente jornada educativa.</p>
+            </section>
+            <section class="daily-info" aria-labelledby="daily-title">
+                <div class="daily-info__heading">
+                    <div>
+                        <p class="daily-info__eyebrow">Información institucional</p>
+                        <h2 id="daily-title">Información del día</h2>
+                    </div>
+                    <time id="currentDate" class="current-date"></time>
+                </div>
+                <div class="daily-info__grid">
+                    <article class="info-item">
+                        <h3>Horario de hoy</h3>
+                        <p>Revisa tus lecciones asignadas y los cambios de aula.</p>
+                    </article>
+                    <article class="info-item">
+                        <h3>Avisos</h3>
+                        <p>No hay comunicados nuevos para el día de hoy.</p>
+                    </article>
+                    <article class="info-item">
+                        <h3>Actividades pendientes</h3>
+                        <p>Consulta y registra las actividades de tus estudiantes.</p>
+                    </article>
+                </div>
+            </section>
+            <p>Desde aquí podrás acceder a las herramientas y recursos para tu labor docente.</p>
+            <a class="btn-login dashboard-link" href="login.html">Cerrar sesión</a>
+        </div>
+    </main>
+    <script>
+        const teacherName = sessionStorage.getItem('nombreUsuario') || 'docente';
+        document.getElementById('teacherName').textContent = teacherName.charAt(0).toUpperCase() + teacherName.slice(1);
+
+        const currentDate = document.getElementById('currentDate');
+        currentDate.textContent = new Intl.DateTimeFormat('es-CR', {
+            weekday: 'long', day: 'numeric', month: 'long'
+        }).format(new Date());
+    </script>
+</body>
+</html>

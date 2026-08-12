@@ -82,12 +82,14 @@ body::after {
 }
 
 .header h1 {
+    color: #fff;
     font-size: 22px;
     font-weight: 600;
     letter-spacing: 0.5px;
 }
 
 .header p {
+    color: #fff;
     font-size: 13px;
     opacity: 0.85;
     margin-top: 4px;
@@ -163,6 +165,48 @@ body::after {
 
 .btn-login:active {
     transform: scale(0.98);
+}
+
+.dashboard {
+    max-width: 560px;
+}
+
+.dashboard-link {
+    display: block;
+    margin-top: 24px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.teacher-greeting {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.teacher-greeting h2 {
+    color: var(--text);
+    font-size: 22px;
+}
+
+.teacher-greeting p {
+    margin-top: 5px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.daily-info__heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.daily-info__eyebrow { color: var(--primary); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.daily-info h2 { margin-top: 4px; color: var(--text); font-size: 22px; }
+.current-date { max-width: 150px; color: var(--text-muted); font-size: 13px; text-align: right; text-transform: capitalize; }
+.daily-info__grid { display: grid; gap: 12px; }
+.info-item { padding: 16px; border-left: 4px solid var(--primary); border-radius: 8px; background: var(--primary-light); }
+.info-item h3 { color: var(--text); font-size: 15px; }
+.info-item p { margin-top: 5px; color: var(--text-muted); font-size: 13px; line-height: 1.45; }
+
+@media (max-width: 420px) {
+    .daily-info__heading { flex-direction: column; }
+    .current-date { max-width: none; text-align: left; }
 }
 
 .options {
