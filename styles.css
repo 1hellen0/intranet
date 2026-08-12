@@ -19,7 +19,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1R7TxlX8Kl78WdKggRqW4LaEhfc2T7v7ghN6kDDg62O39y45TKIOfO7I&s=10') center center / cover no-repeat fixed;
+    background: var(--primary-dark);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -28,13 +28,35 @@ body {
     padding: 20px;
 }
 
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(rgba(64, 145, 220, 0.35), rgba(64, 145, 220, 0.35)),
+        url('https://static4.depositphotos.com/1005858/386/i/450/depositphotos_3863571-stock-photo-school-wing-and-entrance.jpg') center center / cover no-repeat;
+    filter: blur(10px);
+    transform: scale(1.1);
+    z-index: -3;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(rgba(18, 64, 126, 0.35), rgba(18, 64, 126, 0.35)),
+        url('https://static4.depositphotos.com/1005858/386/i/450/depositphotos_3863571-stock-photo-school-wing-and-entrance.jpg') center center / cover no-repeat;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 25%, black 60%, black 100%);
+    mask-image: linear-gradient(to right, transparent 0%, transparent 25%, black 60%, black 100%);
+    z-index: -2;
+}
+
 .card {
-    background: var(--white);
+    background: transparent;
     width: 100%;
     max-width: 400px;
     border-radius: 16px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
     animation: slideUp 0.5s ease;
 }
 
@@ -44,15 +66,19 @@ body {
 }
 
 .header {
-    background: var(--primary);
-    color: var(--white);
+    color: var(--primary);
     text-align: center;
     padding: 32px 24px;
 }
 
 .header .logo {
-    font-size: 48px;
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
     margin-bottom: 8px;
+    border-radius: 50%;
+    background: var(--white);
+    padding: 6px;
 }
 
 .header h1 {
@@ -68,7 +94,10 @@ body {
 }
 
 .body {
+    background: var(--white);
     padding: 32px 28px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
 }
 
 .field {
