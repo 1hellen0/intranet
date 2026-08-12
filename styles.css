@@ -1,0 +1,218 @@
+:root {
+    --primary: #1a5fb4;
+    --primary-dark: #12407e;
+    --primary-light: #e8f0fb;
+    --accent: #26a269;
+    --text: #1f2933;
+    --text-muted: #6b7280;
+    --bg: #eef2f7;
+    --white: #ffffff;
+    --error: #c0392b;
+    --shadow: 0 10px 30px rgba(18, 64, 126, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1R7TxlX8Kl78WdKggRqW4LaEhfc2T7v7ghN6kDDg62O39y45TKIOfO7I&s=10') center center / cover no-repeat fixed;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.card {
+    background: var(--white);
+    width: 100%;
+    max-width: 400px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.header {
+    background: var(--primary);
+    color: var(--white);
+    text-align: center;
+    padding: 32px 24px;
+}
+
+.header .logo {
+    font-size: 48px;
+    margin-bottom: 8px;
+}
+
+.header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.header p {
+    font-size: 13px;
+    opacity: 0.85;
+    margin-top: 4px;
+}
+
+.body {
+    padding: 32px 28px;
+}
+
+.field {
+    margin-bottom: 18px;
+}
+
+.field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.field input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+.field input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26, 95, 180, 0.15);
+}
+
+.field .input-error {
+    border-color: var(--error);
+}
+
+.error-msg {
+    color: var(--error);
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+}
+
+.field.has-error .error-msg {
+    display: block;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 13px;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 6px;
+}
+
+.btn-login:hover {
+    background: var(--primary-dark);
+}
+
+.btn-login:active {
+    transform: scale(0.98);
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    font-size: 13px;
+}
+
+.options a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.options a:hover {
+    text-decoration: underline;
+}
+
+.roles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.roles button {
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--text-muted);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.roles button.active {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 24px;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.footer a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.msg-box {
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-align: center;
+    display: none;
+}
+
+.msg-box.success {
+    display: block;
+    background: #e6f4ea;
+    color: var(--accent);
+    border: 1px solid #b7e1c3;
+}
+
+.msg-box.error {
+    display: block;
+    background: #fdecea;
+    color: var(--error);
+    border: 1px solid #f5c6c2;
+}
