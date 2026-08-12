@@ -6,17 +6,34 @@
     <title>Intranet | Panel docente</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <main class="card dashboard">
-        <div class="header">
-            <h1>Panel docente</h1>
-            <p>Bienvenido a la Intranet Institucional.</p>
-        </div>
-        <div class="body">
+<body class="teacher-page">
+    <main class="teacher-layout">
+        <aside class="teacher-sidebar">
+            <div class="teacher-brand">
+                <p>Intranet Institucional</p>
+                <h1>Panel docente</h1>
+            </div>
+
+            <nav aria-label="Menú docente">
+                <a class="teacher-nav__link active" href="#inicio">Inicio</a>
+                <a class="teacher-nav__link" href="#clases">Clases de hoy</a>
+                <a class="teacher-nav__link" href="#estudiantes">Estudiantes</a>
+                <a class="teacher-nav__link" href="#asistencia">Asistencia</a>
+                <a class="teacher-nav__link" href="#calificaciones">Calificaciones</a>
+                <a class="teacher-nav__link" href="#tareas">Tareas</a>
+                <a class="teacher-nav__link" href="#examenes">Exámenes</a>
+            </nav>
+
+            <a class="teacher-logout" href="login.html">Cerrar sesión</a>
+        </aside>
+
+        <section class="teacher-content" id="inicio">
             <section class="teacher-greeting" aria-labelledby="greetingTitle">
+                <p class="teacher-greeting__label">Inicio</p>
                 <h2 id="greetingTitle">¡Hola, <span id="teacherName">docente</span>!</h2>
                 <p>Te deseamos una excelente jornada educativa.</p>
             </section>
+
             <section class="daily-info" aria-labelledby="daily-title">
                 <div class="daily-info__heading">
                     <div>
@@ -26,30 +43,28 @@
                     <time id="currentDate" class="current-date"></time>
                 </div>
                 <div class="daily-info__grid">
-                    <article class="info-item">
-                        <h3>Horario de hoy</h3>
+                    <article class="info-item" id="clases">
+                        <h3>Clases de hoy</h3>
                         <p>Revisa tus lecciones asignadas y los cambios de aula.</p>
                     </article>
-                    <article class="info-item">
-                        <h3>Avisos</h3>
-                        <p>No hay comunicados nuevos para el día de hoy.</p>
+                    <article class="info-item" id="asistencia">
+                        <h3>Asistencia</h3>
+                        <p>Registra la asistencia de tus estudiantes al iniciar cada lección.</p>
                     </article>
-                    <article class="info-item">
+                    <article class="info-item" id="tareas">
                         <h3>Actividades pendientes</h3>
-                        <p>Consulta y registra las actividades de tus estudiantes.</p>
+                        <p>Consulta y registra las tareas y actividades de tus estudiantes.</p>
                     </article>
                 </div>
             </section>
-            <p>Desde aquí podrás acceder a las herramientas y recursos para tu labor docente.</p>
-            <a class="btn-login dashboard-link" href="login.html">Cerrar sesión</a>
-        </div>
+        </section>
     </main>
+
     <script>
         const teacherName = sessionStorage.getItem('nombreUsuario') || 'docente';
         document.getElementById('teacherName').textContent = teacherName.charAt(0).toUpperCase() + teacherName.slice(1);
 
-        const currentDate = document.getElementById('currentDate');
-        currentDate.textContent = new Intl.DateTimeFormat('es-CR', {
+        document.getElementById('currentDate').textContent = new Intl.DateTimeFormat('es-CR', {
             weekday: 'long', day: 'numeric', month: 'long'
         }).format(new Date());
     </script>
