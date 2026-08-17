@@ -267,6 +267,8 @@ body::after {
 .calendar__day:hover { background: var(--primary-light); }
 .calendar__day.is-today { border: 1px solid var(--primary); }
 .calendar__day.is-selected { color: var(--white); background: var(--primary); }
+.calendar__day.has-pending::after { content: ""; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; border-radius: 50%; background: var(--error); }
+.calendar__day { position: relative; }
 .pending-list { padding: 18px; border-radius: 10px; background: var(--primary-light); }
 .pending-list ul { margin: 14px 0 0 18px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
 .pending-form { display: flex; gap: 7px; margin-top: 14px; }

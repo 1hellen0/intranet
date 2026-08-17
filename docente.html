@@ -97,13 +97,13 @@
         const finishedClasses = {};
         const defaultPending = ['Preparar materiales de clase', 'Registrar asistencia', 'Revisar tareas asignadas'];
         const pendingTemplates = [
-            ['Organizar el material de la próxima semana'],
+            [],
             ['Preparar la lectura guiada', 'Registrar asistencia de 5.º año', 'Revisar cuadernos de Español'],
             ['Imprimir práctica de fracciones', 'Calificar tareas de Matemáticas', 'Enviar recordatorio a las familias'],
             ['Preparar materiales para el experimento', 'Actualizar el registro de calificaciones', 'Revisar proyectos de Ciencias'],
             ['Organizar la actividad de comprensión lectora', 'Registrar asistencia del grupo', 'Preparar guía de Estudios Sociales'],
             ['Revisar evaluaciones semanales', 'Completar reporte de seguimiento', 'Asignar tarea para el fin de semana'],
-            ['Planificar las lecciones de la próxima semana']
+            []
         ];
         const dateKey = date => `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
         const escapeHtml = value => value.replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
@@ -122,30 +122,20 @@
             }).join('') : '<p class="empty-state">No hay clases programadas para este día.</p>';
             document.getElementById('pendingDate').textContent = `Pendientes: ${formatDate(selectedDate)}`;
             document.getElementById('pendingItems').innerHTML = pendientes.map((pending, index) => `<li class="pending-item ${pending.done ? 'is-done' : ''}"><input aria-label="Pendiente" value="${escapeHtml(pending.text)}" ${pending.done ? 'disabled' : ''}><button type="button" data-pending="${index}" ${pending.done ? 'disabled' : ''}>${pending.done ? 'Hecho' : 'Marcar hecho'}</button></li>`).join('');
-            document.querySelectorAll('.finish-class').forEach(button => button.addEventListener('click', () => { finished[Number(button.dataset.class)] = true; renderSchedule(); }));
-            document.querySelectorAll('[data-pending]').forEach(button => button.addEventListener('click', () => { const pending = pendientes[Number(button.dataset.pending)]; pending.text = button.previousElementSibling.value.trim() || pending.text; pending.done = true; renderSchedule(); }));
-        }
-
-        function renderSchedule() { const items = schedules[selectedDate.getDay()]; document.getElementById('classesDate').textContent = `Horario: ${formatDate(selectedDate)}`; document.getElementById('classCount').textContent = `${items.length} clases`; document.getElementById('classSchedule').innerHTML = items.length ? items.map(item => `<article><time>${item[0]}</time><div><h3>${item[1]}</h3><p>${item[2]}</p></div></article>`).join('') : '<p class="empty-state">No hay clases programadas para este día.</p>'; document.getElementById('pendingDate').textContent = `Pendientes: ${formatDate(selectedDate)}`; document.getElementById('pendingItems').innerHTML = (items.length ? ['Preparar materiales de clase', 'Registrar asistencia', 'Revisar tareas asignadas'] : ['No hay pendientes para este día.']).map(item => `<li>${item}</li>`).join(''); }
-        function renderSchedule() {
-            const items = schedules[selectedDate.getDay()];
-            const key = dateKey(selectedDate);
-            const templates = pendingTemplates[selectedDate.getDay()] || defaultPending;
-            const pendientes = pendingByDate[key] || (pendingByDate[key] = templates.map(text => ({ text, done: false })));
-            const finished = finishedClasses[key] || (finishedClasses[key] = []);
-            document.getElementById('classesDate').textContent = `Horario: ${formatDate(selectedDate)}`;
-            document.getElementById('classCount').textContent = `${items.length} clases`;
-            document.getElementById('classSchedule').innerHTML = items.length ? items.map((item, index) => {
-                const isFinished = Boolean(finished[index]);
-                return `<article class="${isFinished ? 'is-finished' : ''}"><time>${item[0]}</time><div><h3>${item[1]}</h3><p>${item[2]}</p></div><button class="finish-class" type="button" data-class="${index}" ${isFinished ? 'disabled' : ''}>${isFinished ? 'Finalizada' : 'Marcar finalizada'}</button></article>`;
-            }).join('') : '<p class="empty-state">No hay clases programadas para este día.</p>';
-            document.getElementById('pendingDate').textContent = `Pendientes: ${formatDate(selectedDate)}`;
-            document.getElementById('pendingItems').innerHTML = pendientes.map((pending, index) => `<li class="pending-item ${pending.done ? 'is-done' : ''}"><input aria-label="Pendiente" value="${escapeHtml(pending.text)}" ${pending.done ? 'disabled' : ''}><button type="button" data-pending="${index}" ${pending.done ? 'disabled' : ''}>${pending.done ? 'Hecho' : 'Marcar hecho'}</button></li>`).join('');
-            document.querySelectorAll('.finish-class').forEach(button => button.addEventListener('click', () => { finished[Number(button.dataset.class)] = true; renderSchedule(); }));
-            document.querySelectorAll('[data-pending]').forEach(button => button.addEventListener('click', () => { const pending = pendientes[Number(button.dataset.pending)]; pending.text = button.previousElementSibling.value.trim() || pending.text; pending.done = true; renderSchedule(); }));
+            document.querySelectorAll('.finish-class').forEach(button => button.addEventListener('click', () => { finished[Number(button.dataset.class)] = true; renderSchedule(); renderCalendar(); }));
+            document.querySelectorAll('[data-pending]').forEach(button => button.addEventListener('click', () => { const pending = pendientes[Number(button.dataset.pending)]; pending.text = button.previousElementSibling.value.trim() || pending.text; pending.done = true; renderSchedule(); renderCalendar(); }));
         }
         function sameDate(a, b) { return a.toDateString() === b.toDateString(); }
-        function renderCalendar() { const y = selectedDate.getFullYear(), m = selectedDate.getMonth(), first = new Date(y, m, 1).getDay(), total = new Date(y, m + 1, 0).getDate(); document.getElementById('calendarMonth').textContent = new Intl.DateTimeFormat('es-CR', { month: 'long', year: 'numeric' }).format(selectedDate); const calendar = document.getElementById('calendarDays'); calendar.innerHTML = '<span></span>'.repeat(first); for (let d = 1; d <= total; d++) { const date = new Date(y, m, d); calendar.insertAdjacentHTML('beforeend', `<button class="calendar__day ${sameDate(date, today) ? 'is-today' : ''} ${sameDate(date, selectedDate) ? 'is-selected' : ''}" data-day="${d}">${d}</button>`); } calendar.querySelectorAll('button').forEach(button => button.onclick = () => { selectedDate = new Date(y, m, Number(button.dataset.day)); renderCalendar(); renderSchedule(); }); }
+        function hasPendingItems(date) {
+            const key = dateKey(date);
+            const pendientes = pendingByDate[key];
+            if (pendientes && pendientes.length > 0) {
+                return pendientes.some(p => !p.done);
+            }
+            const templates = pendingTemplates[date.getDay()] || defaultPending;
+            return templates.length > 0;
+        }
+        function renderCalendar() { const y = selectedDate.getFullYear(), m = selectedDate.getMonth(), first = new Date(y, m, 1).getDay(), total = new Date(y, m + 1, 0).getDate(); document.getElementById('calendarMonth').textContent = new Intl.DateTimeFormat('es-CR', { month: 'long', year: 'numeric' }).format(selectedDate); const calendar = document.getElementById('calendarDays'); calendar.innerHTML = '<span></span>'.repeat(first); for (let d = 1; d <= total; d++) { const date = new Date(y, m, d); const pending = hasPendingItems(date) && !sameDate(date, today); calendar.insertAdjacentHTML('beforeend', `<button class="calendar__day ${sameDate(date, today) ? 'is-today' : ''} ${sameDate(date, selectedDate) ? 'is-selected' : ''} ${pending ? 'has-pending' : ''}" data-day="${d}">${d}</button>`); } calendar.querySelectorAll('button').forEach(button => button.onclick = () => { selectedDate = new Date(y, m, Number(button.dataset.day)); renderCalendar(); renderSchedule(); }); }
         document.getElementById('studentsList').innerHTML = students.map((student, i) => `<article class="student-row"><div><strong>${student}</strong><small>5.º año</small></div><label><input type="checkbox" data-student="${i}"> Presente</label></article>`).join('');
         document.getElementById('attendanceSummary').innerHTML = students.map((student, i) => { const [absences, tardies] = attendance[i], warning = tardies >= 3; return `<tr><td>${student}</td><td>${absences}</td><td>${tardies}</td><td><span class="status ${warning ? 'status-warning' : 'status-ok'}">${warning ? 'Amonestación' : 'Al día'}</span></td></tr>`; }).join('');
         document.getElementById('gradesTable').innerHTML = students.map((student, i) => `<tr><td>${student}</td>${grades[i].map(grade => `<td><span class="grade grade-${grade >= 80 ? 'high' : grade >= 70 ? 'medium' : 'low'}">${grade}</span></td>`).join('')}</tr>`).join('');
@@ -180,6 +170,7 @@
                 current.push({ text, done: false });
                 input.value = '';
                 renderSchedule();
+                renderCalendar();
             }
         });
         renderCalendar(); renderSchedule();
