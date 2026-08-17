@@ -96,13 +96,23 @@
         const pendingByDate = {};
         const finishedClasses = {};
         const defaultPending = ['Preparar materiales de clase', 'Registrar asistencia', 'Revisar tareas asignadas'];
+        const pendingTemplates = [
+            ['Organizar el material de la próxima semana'],
+            ['Preparar la lectura guiada', 'Registrar asistencia de 5.º año', 'Revisar cuadernos de Español'],
+            ['Imprimir práctica de fracciones', 'Calificar tareas de Matemáticas', 'Enviar recordatorio a las familias'],
+            ['Preparar materiales para el experimento', 'Actualizar el registro de calificaciones', 'Revisar proyectos de Ciencias'],
+            ['Organizar la actividad de comprensión lectora', 'Registrar asistencia del grupo', 'Preparar guía de Estudios Sociales'],
+            ['Revisar evaluaciones semanales', 'Completar reporte de seguimiento', 'Asignar tarea para el fin de semana'],
+            ['Planificar las lecciones de la próxima semana']
+        ];
         const dateKey = date => `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
         const escapeHtml = value => value.replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
 
         function renderSchedule() {
             const items = schedules[selectedDate.getDay()];
             const key = dateKey(selectedDate);
-            const pendientes = pendingByDate[key] || (pendingByDate[key] = (items.length ? defaultPending : ['No hay pendientes para este día.']).map(text => ({ text, done: false })));
+            const templates = pendingTemplates[selectedDate.getDay()] || defaultPending;
+            const pendientes = pendingByDate[key] || (pendingByDate[key] = templates.map(text => ({ text, done: false })));
             const finished = finishedClasses[key] || (finishedClasses[key] = []);
             document.getElementById('classesDate').textContent = `Horario: ${formatDate(selectedDate)}`;
             document.getElementById('classCount').textContent = `${items.length} clases`;
@@ -120,7 +130,8 @@
         function renderSchedule() {
             const items = schedules[selectedDate.getDay()];
             const key = dateKey(selectedDate);
-            const pendientes = pendingByDate[key] || (pendingByDate[key] = (items.length ? defaultPending : ['No hay pendientes para este día.']).map(text => ({ text, done: false })));
+            const templates = pendingTemplates[selectedDate.getDay()] || defaultPending;
+            const pendientes = pendingByDate[key] || (pendingByDate[key] = templates.map(text => ({ text, done: false })));
             const finished = finishedClasses[key] || (finishedClasses[key] = []);
             document.getElementById('classesDate').textContent = `Horario: ${formatDate(selectedDate)}`;
             document.getElementById('classCount').textContent = `${items.length} clases`;

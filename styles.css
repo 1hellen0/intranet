@@ -271,12 +271,17 @@ body::after {
 .pending-list ul { margin: 14px 0 0 18px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
 .pending-form { display: flex; gap: 7px; margin-top: 14px; }
 .pending-form input { min-width: 0; flex: 1; padding: 9px; border: 1px solid #b9cce6; border-radius: 6px; font: inherit; font-size: 13px; }
-.pending-form button, .finish-class, .pending-item button { padding: 8px 10px; border: 0; border-radius: 6px; color: var(--white); background: var(--primary); font-size: 12px; font-weight: 700; cursor: pointer; }
+.pending-form button, .finish-class { padding: 8px 10px; border: 0; border-radius: 6px; color: var(--white); background: var(--primary); font-size: 12px; font-weight: 700; cursor: pointer; }
+.pending-item button { flex: 0 0 32px; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; color: transparent; background: var(--primary); cursor: pointer; position: relative; transition: transform 0.15s, background 0.15s; }
+.pending-item button::before { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--white); font-size: 17px; font-weight: 800; }
+.pending-item button:hover:not(:disabled) { background: var(--accent); transform: scale(1.08); }
 .pending-item { display: flex; align-items: center; gap: 8px; margin-left: -18px; list-style: none; }
 .pending-item input { min-width: 0; flex: 1; padding: 8px; border: 1px solid transparent; border-radius: 6px; color: var(--text); background: rgba(255, 255, 255, 0.72); font: inherit; font-size: 13px; }
 .pending-item input:focus { border-color: var(--primary); outline: 0; }
 .pending-item.is-done input { color: #607084; text-decoration: line-through; background: transparent; }
-.pending-item button:disabled, .finish-class:disabled { color: #527061; background: #d9f2e4; cursor: default; }
+.finish-class:disabled { color: #527061; background: #d9f2e4; cursor: default; }
+.pending-item button:disabled { color: transparent; background: #d9f2e4; cursor: default; }
+.pending-item button:disabled::before { color: #26744d; }
 .teacher-view:not([data-view="inicio"]) { padding: 28px; background: var(--white); border-radius: 12px; box-shadow: var(--shadow); }
 .teacher-view[data-view="clases"] .classes-panel__layout { margin-bottom: 30px; }
 .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 22px; border-top: 1px solid #e5e7eb; }
