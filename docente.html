@@ -9,64 +9,169 @@
 <body class="teacher-page">
     <main class="teacher-layout">
         <aside class="teacher-sidebar">
-            <div class="teacher-brand">
-                <p>Intranet Institucional</p>
-                <h1>Panel docente</h1>
-            </div>
-
+            <div class="teacher-brand"><p>Intranet Institucional</p><h1>Panel docente</h1></div>
             <nav aria-label="Menú docente">
-                <a class="teacher-nav__link active" href="#inicio">Inicio</a>
-                <a class="teacher-nav__link" href="#clases">Clases de hoy</a>
-                <a class="teacher-nav__link" href="#estudiantes">Estudiantes</a>
-                <a class="teacher-nav__link" href="#asistencia">Asistencia</a>
-                <a class="teacher-nav__link" href="#calificaciones">Calificaciones</a>
-                <a class="teacher-nav__link" href="#tareas">Tareas</a>
-                <a class="teacher-nav__link" href="#examenes">Exámenes</a>
+                <button class="teacher-nav__link active" data-view="inicio">Inicio</button>
+                <button class="teacher-nav__link" data-view="clases">Clases de hoy</button>
+                <button class="teacher-nav__link" data-view="estudiantes">Estudiantes</button>
+                <button class="teacher-nav__link" data-view="asistencia">Asistencia</button>
+                <button class="teacher-nav__link" data-view="calificaciones">Calificaciones</button>
+                <button class="teacher-nav__link" data-view="tareas">Tareas</button>
+                <button class="teacher-nav__link" data-view="examenes">Exámenes</button>
             </nav>
-
             <a class="teacher-logout" href="login.html">Cerrar sesión</a>
         </aside>
 
-        <section class="teacher-content" id="inicio">
-            <section class="teacher-greeting" aria-labelledby="greetingTitle">
-                <p class="teacher-greeting__label">Inicio</p>
-                <h2 id="greetingTitle">¡Hola, <span id="teacherName">docente</span>!</h2>
-                <p>Te deseamos una excelente jornada educativa.</p>
+        <section class="teacher-content">
+            <section class="teacher-view active" data-view="inicio">
+                <section class="teacher-greeting"><p class="teacher-greeting__label">Inicio</p><h2>¡Hola, <span id="teacherName">docente</span>!</h2><p>Te deseamos una excelente jornada educativa.</p></section>
+                <section class="daily-info">
+                    <div class="daily-info__heading"><div><p class="daily-info__eyebrow">Información institucional</p><h2>Información del día</h2></div><time id="currentDate" class="current-date"></time></div>
+                    <div class="daily-info__grid">
+                        <button class="info-item info-action" type="button" data-info="clases"><h3>Clases de hoy</h3><p>Consulta tu horario y la planificación de cada lección.</p></button>
+                        <button class="info-item info-action" type="button" data-info="asistencia"><h3>Asistencia</h3><p>Registra la asistencia de tus estudiantes al iniciar cada lección.</p></button>
+                        <button class="info-item info-action" type="button" data-info="actividades"><h3>Actividades pendientes</h3><p>Consulta tareas, evaluaciones y avisos del día.</p></button>
+                    </div>
+                </section>
+                <section id="dailyDetail" class="daily-detail" aria-live="polite">
+                    <p>Selecciona una opción de Información del día para ver el detalle.</p>
+                </section>
             </section>
 
-            <section class="daily-info" aria-labelledby="daily-title">
-                <div class="daily-info__heading">
-                    <div>
-                        <p class="daily-info__eyebrow">Información institucional</p>
-                        <h2 id="daily-title">Información del día</h2>
-                    </div>
-                    <time id="currentDate" class="current-date"></time>
+            <section class="teacher-view" data-view="clases">
+                <p class="daily-info__eyebrow">Planificación</p><h2>Clases de hoy</h2>
+                <div class="classes-panel__layout">
+                    <div class="calendar"><h3 id="calendarMonth"></h3><div class="calendar__weekdays"><span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span></div><div id="calendarDays" class="calendar__days"></div></div>
+                    <div class="pending-list"><h3 id="pendingDate">Pendientes</h3><ul id="pendingItems"></ul><form id="addPendingForm" class="pending-form"><input id="newPending" required placeholder="Escribe un pendiente"><button type="submit">Agregar</button></form></div>
                 </div>
-                <div class="daily-info__grid">
-                    <article class="info-item" id="clases">
-                        <h3>Clases de hoy</h3>
-                        <p>Revisa tus lecciones asignadas y los cambios de aula.</p>
-                    </article>
-                    <article class="info-item" id="asistencia">
-                        <h3>Asistencia</h3>
-                        <p>Registra la asistencia de tus estudiantes al iniciar cada lección.</p>
-                    </article>
-                    <article class="info-item" id="tareas">
-                        <h3>Actividades pendientes</h3>
-                        <p>Consulta y registra las tareas y actividades de tus estudiantes.</p>
-                    </article>
-                </div>
+                <div class="section-heading"><h3 id="classesDate">Horario del día</h3><span id="classCount" class="badge"></span></div>
+                <div id="classSchedule" class="schedule-list"></div>
+            </section>
+
+            <section class="teacher-view" data-view="estudiantes">
+                <p class="daily-info__eyebrow">Grupo asignado</p><h2>Estudiantes</h2><p class="section-description">Lista en orden alfabético. Marca la asistencia del día.</p>
+                <div id="studentsList" class="data-list"></div>
+            </section>
+
+            <section class="teacher-view" data-view="asistencia">
+                <p class="daily-info__eyebrow">Control de asistencia</p><h2>Justificantes y tardías</h2>
+                <div class="notice-card"><strong>Regla institucional:</strong> al acumular 3 tardías se genera una amonestación.</div>
+                <div class="upload-box"><label for="justification">Subir justificante enviado por la familia</label><input id="justification" type="file" accept=".pdf,image/*"><span id="fileStatus">Aún no se ha seleccionado un archivo.</span></div>
+                <div class="table-wrap"><table><thead><tr><th>Estudiante</th><th>Faltas justificadas</th><th>Tardías</th><th>Estado</th></tr></thead><tbody id="attendanceSummary"></tbody></table></div>
+            </section>
+
+            <section class="teacher-view" data-view="calificaciones">
+                <p class="daily-info__eyebrow">Rendimiento académico</p><h2>Calificaciones</h2><p class="section-description">Verde: alta (80–100), amarillo: media alta (70–79), rojo: baja (menos de 70).</p>
+                <div class="table-wrap"><table><thead><tr><th>Estudiante</th><th>Español</th><th>Matemáticas</th><th>Ciencias</th></tr></thead><tbody id="gradesTable"></tbody></table></div>
+            </section>
+
+            <section class="teacher-view" data-view="tareas">
+                <p class="daily-info__eyebrow">Seguimiento académico</p><h2>Tareas asignadas</h2>
+                <div class="table-wrap"><table><thead><tr><th>Materia</th><th>Tarea</th><th>Inicio</th><th>Entrega</th></tr></thead><tbody><tr><td>Español</td><td>Lectura y resumen del capítulo 3</td><td>13 ago. 2026</td><td>18 ago. 2026</td></tr><tr><td>Matemáticas</td><td>Ejercicios de fracciones</td><td>12 ago. 2026</td><td>17 ago. 2026</td></tr><tr><td>Ciencias</td><td>Maqueta del sistema solar</td><td>10 ago. 2026</td><td>21 ago. 2026</td></tr></tbody></table></div>
+            </section>
+
+            <section class="teacher-view" data-view="examenes">
+                <p class="daily-info__eyebrow">Evaluaciones</p><h2>Programación de exámenes</h2>
+                <div class="exam-list"><article><span class="exam-date">20 AGO</span><div><h3>Español</h3><p>Comprensión lectora · 8:00 a. m.</p></div></article><article><span class="exam-date">22 AGO</span><div><h3>Matemáticas</h3><p>Fracciones y operaciones · 10:00 a. m.</p></div></article><article><span class="exam-date">25 AGO</span><div><h3>Ciencias</h3><p>El sistema solar · 9:00 a. m.</p></div></article></div>
             </section>
         </section>
     </main>
-
     <script>
+        const students = ['Alejandro Campos', 'Ana Sofía Mora', 'Bruno Rodríguez', 'Carolina Vargas', 'Daniela Hernández', 'Emilio Sánchez', 'Gabriela Jiménez', 'José Pablo Rojas', 'Luciana Castillo', 'Mateo González'];
+        const grades = [[92, 86, 78], [74, 82, 91], [65, 73, 69], [88, 77, 84], [95, 91, 89], [72, 68, 76], [81, 85, 94], [69, 75, 71], [90, 79, 83], [77, 88, 66]];
+        const attendance = [[0, 1], [1, 3], [0, 0], [2, 2], [0, 1], [1, 0], [0, 4], [0, 2], [1, 1], [0, 0]];
+        const schedules = [[], [['08:00', 'Español', '5.º año'], ['09:30', 'Matemáticas', '5.º año'], ['11:00', 'Ciencias', '5.º año']], [['08:00', 'Matemáticas', '5.º año'], ['10:00', 'Español', '5.º año']], [['08:00', 'Ciencias', '5.º año'], ['09:30', 'Estudios Sociales', '5.º año'], ['11:00', 'Español', '5.º año']], [['08:00', 'Español', '5.º año'], ['09:30', 'Matemáticas', '5.º año']], [['08:00', 'Ciencias', '5.º año'], ['10:00', 'Educación Cívica', '5.º año']], []];
         const teacherName = sessionStorage.getItem('nombreUsuario') || 'docente';
         document.getElementById('teacherName').textContent = teacherName.charAt(0).toUpperCase() + teacherName.slice(1);
+        const formatDate = date => new Intl.DateTimeFormat('es-CR', { weekday: 'long', day: 'numeric', month: 'long' }).format(date);
+        let today = new Date(), selectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        document.getElementById('currentDate').textContent = formatDate(today);
 
-        document.getElementById('currentDate').textContent = new Intl.DateTimeFormat('es-CR', {
-            weekday: 'long', day: 'numeric', month: 'long'
-        }).format(new Date());
+        document.querySelectorAll('.teacher-nav__link').forEach(button => button.addEventListener('click', () => {
+            document.querySelectorAll('.teacher-nav__link').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.teacher-view').forEach(view => view.classList.remove('active'));
+            button.classList.add('active'); document.querySelector(`.teacher-view[data-view="${button.dataset.view}"]`).classList.add('active');
+        }));
+
+        const pendingByDate = {};
+        const finishedClasses = {};
+        const defaultPending = ['Preparar materiales de clase', 'Registrar asistencia', 'Revisar tareas asignadas'];
+        const dateKey = date => `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        const escapeHtml = value => value.replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
+
+        function renderSchedule() {
+            const items = schedules[selectedDate.getDay()];
+            const key = dateKey(selectedDate);
+            const pendientes = pendingByDate[key] || (pendingByDate[key] = (items.length ? defaultPending : ['No hay pendientes para este día.']).map(text => ({ text, done: false })));
+            const finished = finishedClasses[key] || (finishedClasses[key] = []);
+            document.getElementById('classesDate').textContent = `Horario: ${formatDate(selectedDate)}`;
+            document.getElementById('classCount').textContent = `${items.length} clases`;
+            document.getElementById('classSchedule').innerHTML = items.length ? items.map((item, index) => {
+                const isFinished = Boolean(finished[index]);
+                return `<article class="${isFinished ? 'is-finished' : ''}"><time>${item[0]}</time><div><h3>${item[1]}</h3><p>${item[2]}</p></div><button class="finish-class" type="button" data-class="${index}" ${isFinished ? 'disabled' : ''}>${isFinished ? 'Finalizada' : 'Marcar finalizada'}</button></article>`;
+            }).join('') : '<p class="empty-state">No hay clases programadas para este día.</p>';
+            document.getElementById('pendingDate').textContent = `Pendientes: ${formatDate(selectedDate)}`;
+            document.getElementById('pendingItems').innerHTML = pendientes.map((pending, index) => `<li class="pending-item ${pending.done ? 'is-done' : ''}"><input aria-label="Pendiente" value="${escapeHtml(pending.text)}" ${pending.done ? 'disabled' : ''}><button type="button" data-pending="${index}" ${pending.done ? 'disabled' : ''}>${pending.done ? 'Hecho' : 'Marcar hecho'}</button></li>`).join('');
+            document.querySelectorAll('.finish-class').forEach(button => button.addEventListener('click', () => { finished[Number(button.dataset.class)] = true; renderSchedule(); }));
+            document.querySelectorAll('[data-pending]').forEach(button => button.addEventListener('click', () => { const pending = pendientes[Number(button.dataset.pending)]; pending.text = button.previousElementSibling.value.trim() || pending.text; pending.done = true; renderSchedule(); }));
+        }
+
+        function renderSchedule() { const items = schedules[selectedDate.getDay()]; document.getElementById('classesDate').textContent = `Horario: ${formatDate(selectedDate)}`; document.getElementById('classCount').textContent = `${items.length} clases`; document.getElementById('classSchedule').innerHTML = items.length ? items.map(item => `<article><time>${item[0]}</time><div><h3>${item[1]}</h3><p>${item[2]}</p></div></article>`).join('') : '<p class="empty-state">No hay clases programadas para este día.</p>'; document.getElementById('pendingDate').textContent = `Pendientes: ${formatDate(selectedDate)}`; document.getElementById('pendingItems').innerHTML = (items.length ? ['Preparar materiales de clase', 'Registrar asistencia', 'Revisar tareas asignadas'] : ['No hay pendientes para este día.']).map(item => `<li>${item}</li>`).join(''); }
+        function renderSchedule() {
+            const items = schedules[selectedDate.getDay()];
+            const key = dateKey(selectedDate);
+            const pendientes = pendingByDate[key] || (pendingByDate[key] = (items.length ? defaultPending : ['No hay pendientes para este día.']).map(text => ({ text, done: false })));
+            const finished = finishedClasses[key] || (finishedClasses[key] = []);
+            document.getElementById('classesDate').textContent = `Horario: ${formatDate(selectedDate)}`;
+            document.getElementById('classCount').textContent = `${items.length} clases`;
+            document.getElementById('classSchedule').innerHTML = items.length ? items.map((item, index) => {
+                const isFinished = Boolean(finished[index]);
+                return `<article class="${isFinished ? 'is-finished' : ''}"><time>${item[0]}</time><div><h3>${item[1]}</h3><p>${item[2]}</p></div><button class="finish-class" type="button" data-class="${index}" ${isFinished ? 'disabled' : ''}>${isFinished ? 'Finalizada' : 'Marcar finalizada'}</button></article>`;
+            }).join('') : '<p class="empty-state">No hay clases programadas para este día.</p>';
+            document.getElementById('pendingDate').textContent = `Pendientes: ${formatDate(selectedDate)}`;
+            document.getElementById('pendingItems').innerHTML = pendientes.map((pending, index) => `<li class="pending-item ${pending.done ? 'is-done' : ''}"><input aria-label="Pendiente" value="${escapeHtml(pending.text)}" ${pending.done ? 'disabled' : ''}><button type="button" data-pending="${index}" ${pending.done ? 'disabled' : ''}>${pending.done ? 'Hecho' : 'Marcar hecho'}</button></li>`).join('');
+            document.querySelectorAll('.finish-class').forEach(button => button.addEventListener('click', () => { finished[Number(button.dataset.class)] = true; renderSchedule(); }));
+            document.querySelectorAll('[data-pending]').forEach(button => button.addEventListener('click', () => { const pending = pendientes[Number(button.dataset.pending)]; pending.text = button.previousElementSibling.value.trim() || pending.text; pending.done = true; renderSchedule(); }));
+        }
+        function sameDate(a, b) { return a.toDateString() === b.toDateString(); }
+        function renderCalendar() { const y = selectedDate.getFullYear(), m = selectedDate.getMonth(), first = new Date(y, m, 1).getDay(), total = new Date(y, m + 1, 0).getDate(); document.getElementById('calendarMonth').textContent = new Intl.DateTimeFormat('es-CR', { month: 'long', year: 'numeric' }).format(selectedDate); const calendar = document.getElementById('calendarDays'); calendar.innerHTML = '<span></span>'.repeat(first); for (let d = 1; d <= total; d++) { const date = new Date(y, m, d); calendar.insertAdjacentHTML('beforeend', `<button class="calendar__day ${sameDate(date, today) ? 'is-today' : ''} ${sameDate(date, selectedDate) ? 'is-selected' : ''}" data-day="${d}">${d}</button>`); } calendar.querySelectorAll('button').forEach(button => button.onclick = () => { selectedDate = new Date(y, m, Number(button.dataset.day)); renderCalendar(); renderSchedule(); }); }
+        document.getElementById('studentsList').innerHTML = students.map((student, i) => `<article class="student-row"><div><strong>${student}</strong><small>5.º año</small></div><label><input type="checkbox" data-student="${i}"> Presente</label></article>`).join('');
+        document.getElementById('attendanceSummary').innerHTML = students.map((student, i) => { const [absences, tardies] = attendance[i], warning = tardies >= 3; return `<tr><td>${student}</td><td>${absences}</td><td>${tardies}</td><td><span class="status ${warning ? 'status-warning' : 'status-ok'}">${warning ? 'Amonestación' : 'Al día'}</span></td></tr>`; }).join('');
+        document.getElementById('gradesTable').innerHTML = students.map((student, i) => `<tr><td>${student}</td>${grades[i].map(grade => `<td><span class="grade grade-${grade >= 80 ? 'high' : grade >= 70 ? 'medium' : 'low'}">${grade}</span></td>`).join('')}</tr>`).join('');
+        document.getElementById('justification').addEventListener('change', event => { document.getElementById('fileStatus').textContent = event.target.files[0] ? `Archivo seleccionado: ${event.target.files[0].name}` : 'Aún no se ha seleccionado un archivo.'; });
+
+        const dailyDetail = document.getElementById('dailyDetail');
+        const classActivities = ['Lectura guiada: capítulo 3', 'Ejercicios de fracciones', 'Experimento del sistema solar'];
+        function showDailyDetail(type) {
+            dailyDetail.classList.add('has-content');
+            const classesToday = schedules[today.getDay()];
+            if (type === 'clases') {
+                dailyDetail.innerHTML = `<h3>Horario de clases de hoy</h3><div class="quick-list">${classesToday.length ? classesToday.map(item => `<p><strong>${item[0]}</strong> · ${item[1]} <span>${item[2]}</span></p>`).join('') : '<p>No hay clases programadas para hoy.</p>'}</div><form class="quick-form" id="addClassForm"><input id="newClass" required placeholder="Ej.: 13:00 - Inglés - 5.º año"><button type="submit">Agregar clase</button></form>`;
+                document.getElementById('addClassForm').addEventListener('submit', event => { event.preventDefault(); const value = document.getElementById('newClass').value.trim(); if (value) { dailyDetail.querySelector('.quick-list').insertAdjacentHTML('beforeend', `<p><strong>Nueva clase</strong> · ${value}</p>`); event.target.reset(); } });
+            }
+            if (type === 'asistencia') {
+                dailyDetail.innerHTML = `<h3>Lista de asistencia</h3><p class="detail-note">Marca a cada estudiante según corresponda.</p><div class="quick-list attendance-list">${students.map(student => `<label><input type="checkbox" checked> ${student}</label>`).join('')}</div><form class="quick-form" id="addStudentForm"><input id="newStudent" required placeholder="Nombre completo del estudiante"><button type="submit">Agregar estudiante</button></form>`;
+                document.getElementById('addStudentForm').addEventListener('submit', event => { event.preventDefault(); const value = document.getElementById('newStudent').value.trim(); if (value) { dailyDetail.querySelector('.attendance-list').insertAdjacentHTML('beforeend', `<label><input type="checkbox" checked> ${value}</label>`); event.target.reset(); } });
+            }
+            if (type === 'actividades') {
+                dailyDetail.innerHTML = `<h3>Actividades de las clases</h3><ul class="quick-list activities-list">${classActivities.map(activity => `<li>${activity}</li>`).join('')}</ul><form class="quick-form" id="addActivityForm"><input id="newActivity" required placeholder="Escribe una nueva actividad"><button type="submit">Agregar actividad</button></form>`;
+                document.getElementById('addActivityForm').addEventListener('submit', event => { event.preventDefault(); const value = document.getElementById('newActivity').value.trim(); if (value) { classActivities.push(value); dailyDetail.querySelector('.activities-list').insertAdjacentHTML('beforeend', `<li>${value}</li>`); event.target.reset(); } });
+            }
+        }
+        document.querySelectorAll('.info-action').forEach(button => button.addEventListener('click', () => showDailyDetail(button.dataset.info)));
+        document.getElementById('addPendingForm').addEventListener('submit', event => {
+            event.preventDefault();
+            const input = document.getElementById('newPending');
+            const text = input.value.trim();
+            if (text) {
+                const key = dateKey(selectedDate);
+                const current = pendingByDate[key] || (pendingByDate[key] = []);
+                current.push({ text, done: false });
+                input.value = '';
+                renderSchedule();
+            }
+        });
+        renderCalendar(); renderSchedule();
     </script>
 </body>
 </html>
